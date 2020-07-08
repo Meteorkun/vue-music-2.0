@@ -2,6 +2,7 @@
   <div class="recommend">
     <div class="recommend-content">
       <div class="slider-wrapper">
+        <slider></slider>
       </div>
       <div class="recommend-list">
         <h1 class="list-title">热门歌单推荐</h1>
@@ -13,18 +14,31 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {getRecommend} from 'api/recommend'
+import {getRecommend,getDiscList} from 'api/recommend'
 import {ERR_OK} from 'api/config'
 
 export default {
+  data() {
+    return {
+      discList: []
+    }
+  },
   created(){
     this._getRecommend()
+    this._getDiscList()
   },
   methods:{
     _getRecommend(){
       getRecommend().then((res) => {
         if(res.code === ERR_OK){
           console.log(res.data.slider)
+      }
+    })
+  },
+  _getDiscList() {
+    getDiscList().then((res) => {
+      if (res.code === ERR_OK) {
+        this.discList = res.data.list
       }
     })
   }
