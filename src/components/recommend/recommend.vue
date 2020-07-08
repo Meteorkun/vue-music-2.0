@@ -1,19 +1,30 @@
 <template>
   <div class="recommend">
     <div class="recommend-content">
-      <div class="slider-wrapper">
-        <slider></slider>
-      </div>
-      <div class="recommend-list">
-        <h1 class="list-title">热门歌单推荐</h1>
-        <ul>
-        </ul>
+      <scroll ref="scroll" class="recommend-content" :data="discList">
+        <div>
+          <div class="recommend-list">
+            <h1 class="list-title">热门歌单推荐</h1>
+            <ul>
+              <li v-for="item in discList" class="item">
+                <div class="icon">
+                  <img :src="item.imgurl" @load="loadImage" width="60" height="60">
+                </div>
+                <div class="text">
+                  <h2 class="name" v-html="item.creator.name"></h2>
+                  <p class="desc" v-html="item.dissname"></p>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      </scroll>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import Scroll from 'base/scroll/scroll'
 import {getRecommend,getDiscList} from 'api/recommend'
 import {ERR_OK} from 'api/config'
 
@@ -32,17 +43,27 @@ export default {
       getRecommend().then((res) => {
         if(res.code === ERR_OK){
           console.log(res.data.slider)
+        }
+      })
+    },
+    _getDiscList() {
+      getDiscList().then((res) => {
+        if (res.code === ERR_OK) {
+          this.discList = res.data.list
+          console.log(this.discList)
+        }
+      })
+    },
+    loadImage(){
+      if(!this.checkloaded){
+        this.checkloaded = true
+        this.$ref.scroll.refresh()
       }
-    })
+    }
   },
-  _getDiscList() {
-    getDiscList().then((res) => {
-      if (res.code === ERR_OK) {
-        this.discList = res.data.list
-      }
-    })
+  components:{
+    Scroll
   }
-}
 }
 </script>
 
