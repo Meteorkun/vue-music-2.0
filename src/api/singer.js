@@ -34,3 +34,5 @@ export function getSingerDetail(singerId) {
 
   return jsonp(url, data, options)
 }
+
+

@@ -38,6 +38,29 @@ export function getDiscList() {
   })
 }
 
+// // 获取音乐播放数据
+// export function getMusic(mid) {
+//   const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg'
+//
+//   const data = Object.assign({}, commonParams, {
+//     singermid: mid,
+//     order: 'listen',
+//     begin: 0,
+//     num: 100,
+//     songstatus: 1,
+//     platform: 'yqq',
+//     hostUin: 0,
+//     needNewCode: 0,
+//     uin: 0
+//   })
+//
+//   return axios.get(url, {
+//     params: data
+//   }).then((res) => {
+//     return Promise.resolve(res.data)
+//   })
+// }
+
 // export function getSongList(disstid) {
 //   const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
 
