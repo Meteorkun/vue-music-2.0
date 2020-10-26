@@ -1,12 +1,12 @@
 <template>
   <div class="recommend">
-    <div class="recommend-content">
+    <!-- <div class="recommend-content"> -->
       <scroll ref="scroll" class="recommend-content" :data="discList">
         <div>
           <div class="recommend-list">
             <h1 class="list-title">热门歌单推荐</h1>
             <ul>
-              <li v-for="item in discList" class="item">
+			  <li v-for="item in discList" class="item">
                 <div class="icon">
                   <img v-lazy="item.imgurl" @load="loadImage" width="60" height="60">
                 </div>
@@ -22,7 +22,7 @@
           <loading></loading>
         </div>
       </scroll>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 

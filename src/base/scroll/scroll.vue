@@ -3,7 +3,6 @@
     <slot></slot>
   </div>
 </template>
-
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
 
@@ -19,7 +18,7 @@
       },
       listenScroll: {
         type: Boolean,
-        default: false
+        default: true
       },
       data: {
         type: Array,
@@ -98,8 +97,7 @@
       }
     }
   }
+
 </script>
-
 <style scoped lang="stylus" rel="stylesheet/stylus">
-
 </style>

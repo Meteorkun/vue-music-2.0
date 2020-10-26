@@ -15,6 +15,7 @@ export function getRecommend() {
   return jsonp(url, data, options)
 }
 
+// 获取歌单数据
 export function getDiscList() {
   const url = '/api/getDiscList'
 

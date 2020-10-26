@@ -18,10 +18,12 @@
     name: 'slider',
     props: {
       loop: {
+		// 轮播图是否可以循环轮播
         type: Boolean,
         default: true
       },
       autoPlay: {
+		// 轮播图是否可以自动轮播
         type: Boolean,
         default: true
       },
@@ -67,6 +69,7 @@
       clearTimeout(this.timer)
     },
     methods: {
+	  // 计算轮播图的宽度
       _setSliderWidth(isResize) {
         this.children = this.$refs.sliderGroup.children
 
