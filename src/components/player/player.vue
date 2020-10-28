@@ -27,18 +27,23 @@
           </div>
         </div>
         <div class="bottom">
+          <div class="progress-wrapper">
+            <span class="time time-l">{{format(currentTime)}}</span>
+            <div class="process-bar-wrapper"></div>
+            <span class="time time-r">{{format(currentSong.duration)}}</span>
+          </div>
           <div class="operators">
             <div class="icon i-left">
               <i class="icon-sequence"></i>
             </div>
             <div class="icon i-left">
-              <i class="icon-prev"></i>
+              <i @click="prev" class="icon-prev"></i>
             </div>
             <div class="icon i-center">
               <i @click="togglePlaying" :class="playIcon"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon-next"></i>
+              <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon i-right">
               <i class="icon icon-not-favorite"></i>
@@ -64,7 +69,7 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url"></audio>
+    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="updateTime"></audio>
   </div>
 </template>
 
@@ -76,6 +81,12 @@
   const transform = prefixStyle('transform')
 
   export default {
+    data() {
+      return {
+        songReady: false,
+        currentTime: 0
+      }
+    },
     computed: {
       playIcon() {
         return this.playing ? 'icon-pause' : 'icon-play'
@@ -91,7 +102,8 @@
         'fullScreen',
         'playlist',
         'currentSong',
-        'playing'
+        'playing',
+        'currentIndex'
       ])
     },
     methods: {
@@ -142,7 +154,63 @@
       },
       // 控制音乐播放
       togglePlaying() {
+        if (!this.songReady) {
+          return
+        }
         this.setPlayingState(!this.playing)
+      },
+      // 播放下一首
+      next() {
+        if (!this.songReady) {
+          return
+        }
+        let index = this.currentIndex + 1
+        if (index === this.playlist.length) {
+          index = 0
+        }
+        this.setcurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlaying()
+        }
+        this.songReady = false
+      },
+      // 播放上一首
+      prev() {
+        if (!this.songReady) {
+          return
+        }
+        let index = this.currentIndex - 1
+        if (index === -1) {
+          index = this.playlist.length - 1
+        }
+        this.setcurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlaying()
+        }
+        this.songReady = false
+      },
+      ready() {
+        this.songReady = true
+      },
+      error() {
+      },
+      updateTime(e) {
+        this.currentTime = e.target.currentTime
+      },
+      format(interval) {
+        //  向下取整
+        interval = interval | 0
+        const minute = interval / 60 | 0
+        const second = this._pad(interval % 60)
+        return `${minute}:${second}`
+      },
+      _pad(num, n = 2) {
+        let len = num.toString().length
+        while (len < n) {
+          num = '0' + num
+          len++
+        }
+        return num
       },
       _getPosAndScale() {
         const targetWidth = 40
@@ -162,7 +230,8 @@
       },
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN',
-        setPlayingState: 'SET_PLAYING_STATE'
+        setPlayingState: 'SET_PLAYING_STATE',
+        setcurrentIndex: 'SET_CURRENT_INDEX'
       })
     },
     watch: {
