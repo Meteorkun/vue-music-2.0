@@ -10,6 +10,7 @@
   import {ERR_OK} from 'api/config'
   import {createSong} from 'common/js/song'
   import MusicList from 'components/music-list/music-list'
+  import {getPlaySongVkey} from 'api/recommend'
 
   export default {
     data() {
@@ -49,7 +50,12 @@
         list.forEach((item) => {
           let {musicData} = item
           if (musicData.songid && musicData.albumid) {
-            ret.push(createSong(musicData))
+            getPlaySongVkey(musicData.songmid).then((res) => {
+              if (res) {
+                ret.push(createSong(musicData, res))
+              }
+            })
+            // ret.push(createSong(musicData))
           }
         })
         return ret
