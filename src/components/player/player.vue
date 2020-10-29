@@ -29,7 +29,9 @@
         <div class="bottom">
           <div class="progress-wrapper">
             <span class="time time-l">{{format(currentTime)}}</span>
-            <div class="process-bar-wrapper"></div>
+            <div class="progress-bar-wrapper">
+              <progress-bar :percent="percent" @percentChange="onProgressBarChange"></progress-bar>
+            </div>
             <span class="time time-r">{{format(currentSong.duration)}}</span>
           </div>
           <div class="operators">
@@ -77,6 +79,7 @@
   import {mapGetters, mapMutations} from 'vuex'
   import animations from 'create-keyframe-animation'
   import {prefixStyle} from 'common/js/dom'
+  import ProgressBar from 'base/progress-bar/progress-bar'
 
   const transform = prefixStyle('transform')
 
@@ -97,6 +100,10 @@
       // 控制唱片图片的旋转
       cdCls() {
         return this.playing ? 'play' : 'play pause'
+      },
+      // 计算当前歌曲播放时长占歌曲总时长比例
+      percent() {
+        return this.currentTime / this.currentSong.duration
       },
       ...mapGetters([
         'fullScreen',
@@ -204,6 +211,12 @@
         const second = this._pad(interval % 60)
         return `${minute}:${second}`
       },
+      onProgressBarChange(percent) {
+        this.$refs.audio.currentTime = percent * this.currentSong.duration
+        if (!this.playing) {
+          this.togglePlaying()
+        }
+      },
       _pad(num, n = 2) {
         let len = num.toString().length
         while (len < n) {
@@ -246,6 +259,9 @@
           newPlaying ? audio.play() : audio.pause()
         })
       }
+    },
+    components: {
+      ProgressBar
     }
   }
 </script>
