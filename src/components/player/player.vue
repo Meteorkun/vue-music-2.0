@@ -73,7 +73,8 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="updateTime"></audio>
+    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="updateTime"
+           @ended="end"></audio>
   </div>
 </template>
 
@@ -213,11 +214,25 @@
       },
       error() {
       },
+      // 歌曲播放结束逻辑
+      end() {
+        if (this.mode === playMode.loop) {
+          this.loop()
+        } else {
+          this.next()
+        }
+      },
+      // 歌曲循环播放
+      loop() {
+        this.$refs.audio.currentTime = 0
+        this.$refs.audio.play()
+      },
       // 改变播放器播放模式
       changeMode() {
         const mode = (this.mode + 1) % 3
         this.setplayMode(mode)
         let list = null
+        // 歌曲随机播放
         if (mode === playMode.random) {
           list = shuffle(this.sequenceList)
         } else {

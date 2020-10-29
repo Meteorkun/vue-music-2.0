@@ -54,7 +54,12 @@
       },
       // 播放器进度条点击控制
       progressClick(e) {
-        this._offset(e.offsetX)
+        // 获取进度条到整个页面左边距离
+        const rect = this.$refs.progressBar.getBoundingClientRect()
+        const offsetWidth = e.pageX - rect.left
+        this._offset(offsetWidth)
+        // 这里当我们点击progressBtn 的时候，e.offsetX获取不对
+        // this._offset(e.offsetX)
         this._triggerPercent()
       },
       _offset(offsetWidth) {
