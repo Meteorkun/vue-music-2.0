@@ -42,12 +42,13 @@ export function createSong(musicData, songVkey) {
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
     // url: `https://isure.stream.qqmusic.qq.com/C400${musicData.songid}.m4a?guid=1819638027&vkey=${songVkey}&uin=0&fromtag=66`
-    // https://isure.stream.qqmusic.qq.com/C400${musicData.songid}.m4a?guid=1819638027&vkey=${songVkey}&uin=0&fromtag=66
+    // url: `https://isure.stream.qqmusic.qq.com/C400${musicData.songid}.m4a?guid=1819638027&vkey=${songVkey}&uin=0&fromtag=66`
     url: `https://ws.stream.qqmusic.qq.com/${songVkey}`
+    // url: `https://ws.stream.qqmusic.qq.com/${musicData}`
   })
 }
 
-function filterSinger(singer) {
+export function filterSinger(singer) {
   let ret = []
   if (!singer) {
     return ''

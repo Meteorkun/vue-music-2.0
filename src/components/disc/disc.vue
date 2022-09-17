@@ -47,14 +47,12 @@
       _normalizeSongs(list) {
         let ret = []
         list.forEach((musicData) => {
-          console.log(musicData)
           if (musicData.songid && musicData.albumid) {
             getPlaySongVkey(musicData.songmid).then((res) => {
               if (res) {
                 ret.push(createSong(musicData, res))
               }
             })
-            // ret.push(createSong(musicData))
           }
         })
         return ret

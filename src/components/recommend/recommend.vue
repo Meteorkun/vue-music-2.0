@@ -66,7 +66,7 @@
       loadImage() {
         if (!this.checkloaded) {
           this.checkloaded = true
-          this.$ref.scroll.refresh()
+          this.$refs.scroll.refresh()
         }
       },
       handlePlaylist(playlist) {
